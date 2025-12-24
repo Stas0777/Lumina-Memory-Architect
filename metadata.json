@@ -1,0 +1,8 @@
+{
+  "name": "Lumina Memory Architect",
+  "description": "A sophisticated Linux-style memory editor and debugger interface. Simulate memory scanning, value freezing, and process manipulation with an AI-integrated hex analysis engine.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

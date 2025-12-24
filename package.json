@@ -1,0 +1,66 @@
+
+{
+  "name": "lumina-memory-architect",
+  "version": "1.0.0",
+  "description": "Professional Memory Editor and Debugger interface for Linux.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "vite build",
+    "dist": "electron-builder --linux rpm",
+    "pack": "electron-builder --dir"
+  },
+  "author": "Lumina Project Contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.4.0",
+    "vite": "^4.0.0"
+  },
+  "build": {
+    "appId": "org.lumina.memoryarchitect",
+    "productName": "Lumina Memory Architect",
+    "executableName": "lumina",
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": [
+        "rpm"
+      ],
+      "category": "Development;Utility;",
+      "maintainer": "Lumina Maintainers <admin@lumina-project.org>",
+      "icon": "icon.png"
+    },
+    "rpm": {
+      "packageName": "lumina-memory-architect",
+      "vendor": "Lumina Open Source",
+      "summary": "Advanced Memory Manipulation Tool",
+      "depends": [
+        "libX11",
+        "libXcomposite",
+        "libXcursor",
+        "libXdamage",
+        "libXext",
+        "libXfixes",
+        "libXi",
+        "libXrender",
+        "libXtst",
+        "cups-libs",
+        "dbus-libs",
+        "expat",
+        "fontconfig",
+        "freetype",
+        "libXrandr",
+        "pango",
+        "cairo",
+        "alsa-lib"
+      ],
+      "desktop": {
+        "Name": "Lumina Memory Architect",
+        "Comment": "Memory Editor and Debugger",
+        "Categories": "Development;Utility;"
+      }
+    }
+  }
+}
