@@ -1,7 +1,8 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+// Fix: Always use process.env.API_KEY directly when initializing the GoogleGenAI client
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getCheatAdvice = async (gameContext: string, goal: string) => {
   try {
@@ -18,6 +19,7 @@ export const getCheatAdvice = async (gameContext: string, goal: string) => {
         topP: 0.95,
       },
     });
+    // Fix: Access the text content directly via the .text property
     return response.text;
   } catch (error) {
     console.error("Gemini API Error:", error);

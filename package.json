@@ -1,72 +1,41 @@
-
 {
   "name": "lumina-memory-architect",
   "version": "1.0.0",
   "description": "Professional Memory Editor and Debugger interface for Linux.",
   "main": "main.js",
+  "type": "commonjs",
   "scripts": {
     "start": "npm run build && electron .",
     "dev": "vite",
     "build": "vite build",
     "dist": "npm run build && electron-builder --linux rpm",
-    "pack": "electron-builder --dir"
+    "preview": "vite preview"
   },
-  "author": "Lumina Project Contributors",
+  "author": "Lumina Project",
   "license": "MIT",
   "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
     "electron": "^25.0.0",
     "electron-builder": "^24.4.0",
-    "vite": "^4.0.0",
-    "@vitejs/plugin-react": "^4.0.0"
+    "typescript": "^5.0.0",
+    "vite": "^4.0.0"
   },
   "dependencies": {
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "@google/genai": "^1.34.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "build": {
     "appId": "org.lumina.memoryarchitect",
     "productName": "Lumina Memory Architect",
-    "executableName": "lumina",
+    "linux": {
+      "target": ["rpm"],
+      "category": "Development"
+    },
     "directories": {
       "output": "dist-package"
-    },
-    "linux": {
-      "target": [
-        "rpm"
-      ],
-      "category": "Development;Utility;",
-      "maintainer": "Lumina Maintainers <admin@lumina-project.org>",
-      "icon": "icon.png"
-    },
-    "rpm": {
-      "packageName": "lumina-memory-architect",
-      "vendor": "Lumina Open Source",
-      "summary": "Advanced Memory Manipulation Tool",
-      "depends": [
-        "libX11",
-        "libXcomposite",
-        "libXcursor",
-        "libXdamage",
-        "libXext",
-        "libXfixes",
-        "libXi",
-        "libXrender",
-        "libXtst",
-        "cups-libs",
-        "dbus-libs",
-        "expat",
-        "fontconfig",
-        "freetype",
-        "libXrandr",
-        "pango",
-        "cairo",
-        "alsa-lib"
-      ],
-      "desktop": {
-        "Name": "Lumina Memory Architect",
-        "Comment": "Memory Editor and Debugger",
-        "Categories": "Development;Utility;"
-      }
     }
   }
 }
