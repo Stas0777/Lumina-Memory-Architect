@@ -1,48 +1,42 @@
 # Lumina Memory Architect
 
-Advanced memory editor and debugger interface for Linux (Fedora optimized).
+Advanced memory editor and debugger interface for Linux (Fedora & Nobara optimized).
 
-## 🚀 How to Test on Your Computer
+## 🚀 Nobara / Fedora Quick Start
 
-To run this application locally, ensure you have [Node.js](https://nodejs.org/) installed on your Fedora/Linux system.
-
-### 1. Setup the Project
-Copy all the files from this project into a folder named `lumina-app`, then open your terminal in that folder:
-
+### 1. Install System Requirements
+Open your terminal and run:
 ```bash
-# Install dependencies
+sudo dnf install nodejs npm rpm-build
+```
+
+### 2. Setup Project
+```bash
+# Navigate to the project folder
 npm install
 ```
 
-### 2. Run in Development Mode
-You can run the app as a desktop window immediately using Electron:
-
+### 3. Development & Testing
 ```bash
-# Start the Electron desktop app
+# Run the app in a desktop window
 npm start
 ```
 
-### 3. Build for Fedora (RPM / AppImage)
-To create the actual installer files that you can share or install on your system:
-
+### 4. Create Native .rpm Package
 ```bash
-# Generate the dist folder with AppImage and RPM
+# This generates the installer in the /dist folder
 npm run dist
 ```
-The files will appear in the `./dist` folder.
 
-## 🛠 Project Structure
+### 5. Install the Result
+```bash
+sudo dnf install ./dist/*.rpm
+```
 
-- `main.js`: Electron entry point (handles the desktop window).
-- `App.tsx`: Main React logic and UI layout.
-- `components/`: UI modules (Scanner, AI Assistant, Distribution Portal).
-- `package.json`: Configuration for building Linux binaries.
-
-## 🤖 AI Assistant
-The app includes a built-in Gemini AI consultant. To use it locally, ensure your `process.env.API_KEY` is set in your environment or a `.env` file.
-
-## 📦 Distribution
-Use the **Distribution Tab** inside the app to generate Fedora `.spec` files and Flatpak manifests for official repository submission.
+## 🛠 Features
+- **Memory Scanner**: High-speed simulation of hex value discovery.
+- **AI Consultant**: Integrated Gemini 3.5 for reverse engineering advice.
+- **Packaging Suite**: Built-in tools for GitHub, COPR, and RPM distribution.
 
 ---
-*Created for the Fedora community. Free and Open Source.*
+*Developed for the Linux Power User.*

@@ -5,9 +5,10 @@
   "description": "Professional Memory Editor and Debugger interface for Linux.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "npm run build && electron .",
+    "dev": "vite",
     "build": "vite build",
-    "dist": "electron-builder --linux rpm",
+    "dist": "npm run build && electron-builder --linux rpm",
     "pack": "electron-builder --dir"
   },
   "author": "Lumina Project Contributors",
@@ -15,14 +16,19 @@
   "devDependencies": {
     "electron": "^25.0.0",
     "electron-builder": "^24.4.0",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "@vitejs/plugin-react": "^4.0.0"
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "build": {
     "appId": "org.lumina.memoryarchitect",
     "productName": "Lumina Memory Architect",
     "executableName": "lumina",
     "directories": {
-      "output": "dist"
+      "output": "dist-package"
     },
     "linux": {
       "target": [

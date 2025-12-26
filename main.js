@@ -1,27 +1,33 @@
 
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
     height: 800,
     backgroundColor: '#0a0a0c',
-    icon: path.join(__dirname, 'icon.png'), // Path to your icon
+    title: "Lumina Memory Architect",
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      // For accessing memory/processes, you'd eventually use a preload script 
-      // or IPC to talk to native Node.js modules like 'memoryjs' or 'robotjs'
     }
   });
 
-  // In production, we would load the built index.html
-  // For development/demo, we load the local file
-  win.loadFile('index.html');
+  // Check if we have a production build
+  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  
+  if (fs.existsSync(indexPath)) {
+    // Load the built version (Production)
+    win.loadFile(indexPath);
+  } else {
+    // Fallback to local index.html if dist doesn't exist yet
+    // This usually only happens during initial setup
+    win.loadFile('index.html');
+  }
 
-  // Open the DevTools if needed
-  // win.webContents.openDevTools();
+  // Optional: win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
