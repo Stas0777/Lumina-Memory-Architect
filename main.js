@@ -13,26 +13,33 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      webSecurity: false // Necessary for loading local assets in some Linux environments
+      webSecurity: false 
     },
-    frame: true, // Use system frame for Nobara/Linux consistency
+    frame: true,
     autoHideMenuBar: true
   });
 
-  // Target the built index.html from Vite
+  // Open DevTools to catch runtime errors
+  win.webContents.openDevTools();
+
+  // Inject main process environment variables into the renderer
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.executeJavaScript(`
+      window.process = window.process || {};
+      window.process.env = ${JSON.stringify(process.env)};
+    `);
+  });
+
   const indexPath = path.join(__dirname, 'dist', 'index.html');
   
   if (fs.existsSync(indexPath)) {
     win.loadFile(indexPath).catch(err => {
-      console.error("Failed to load production build:", err);
+      console.error("Lumina Error: Failed to load production build:", err);
     });
   } else {
-    // Development fallback
-    console.warn("Production build (dist/) not found. Attempting to load root index.html.");
-    win.loadFile('index.html');
+    console.error("Lumina Error: 'dist/index.html' not found.");
+    win.loadURL('data:text/html,<html><body style="background:#0a0a0c;color:white;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;"><div><h1>Build Required</h1><p>Please run <b>npm start</b> in your terminal.</p></div></body></html>');
   }
-
-  // win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {

@@ -31,7 +31,9 @@
     "appId": "org.lumina.memoryarchitect",
     "productName": "Lumina Memory Architect",
     "linux": {
-      "target": ["rpm"],
+      "target": [
+        "rpm"
+      ],
       "category": "Development"
     },
     "directories": {

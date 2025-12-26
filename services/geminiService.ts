@@ -1,11 +1,16 @@
-
 import { GoogleGenAI } from "@google/genai";
-
-// Fix: Always use process.env.API_KEY directly when initializing the GoogleGenAI client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const getCheatAdvice = async (gameContext: string, goal: string) => {
   try {
+    // Defensively check for the API key in the process environment
+    const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : null;
+    
+    if (!apiKey) {
+      console.warn("Lumina AI: API_KEY not found in process.env");
+      return "AI Consultant Error: No API Key detected. Please set the API_KEY environment variable before starting the app.";
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: `User is using a memory editor like Cheat Engine on Linux. 
@@ -19,10 +24,10 @@ export const getCheatAdvice = async (gameContext: string, goal: string) => {
         topP: 0.95,
       },
     });
-    // Fix: Access the text content directly via the .text property
-    return response.text;
+    
+    return response.text || "The AI provided an empty response.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "The AI consultant is currently offline. Please check your system logs.";
+    return "The AI consultant encountered an error: " + (error instanceof Error ? error.message : String(error));
   }
 };

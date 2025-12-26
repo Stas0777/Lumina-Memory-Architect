@@ -3,27 +3,29 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Fix: Define __dirname for ESM context since it is not globally available
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // CRITICAL: Ensures assets use relative paths like ./assets/ instead of /assets/
+  base: './', 
+  define: {
+    // This is the fix for the "API Key" browser error. 
+    // It tells Vite to use the actual Node.js process object available in Electron.
+    'process.env': 'process.env'
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        // Fix: Use the manually defined __dirname
         main: path.resolve(__dirname, 'index.html'),
       },
     },
   },
   resolve: {
     alias: {
-      // Fix: Use the manually defined __dirname
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, './'),
     },
   },
 });

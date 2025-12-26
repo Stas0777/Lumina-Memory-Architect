@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { getCheatAdvice } from '../services/geminiService';
+import React, { useState, useEffect } from 'react';
+import { getCheatAdvice } from '../services/adviceService';
 
 interface AIAssistantProps {
   gameName: string;
@@ -10,6 +9,12 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ gameName }) => {
   const [goal, setGoal] = useState('');
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isCloudEnabled, setIsCloudEnabled] = useState(false);
+
+  useEffect(() => {
+    const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : null;
+    setIsCloudEnabled(!!(apiKey && apiKey !== "undefined"));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +32,16 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ gameName }) => {
         <div className="w-20 h-20 rounded-full bg-blue-600/10 border border-blue-500 flex items-center justify-center text-blue-500 text-3xl shadow-[0_0_30px_rgba(59,130,246,0.2)]">
           <i className="fa-solid fa-brain"></i>
         </div>
-        <h1 className="text-3xl font-black text-white">Reverse Engineering Consultant</h1>
-        <p className="text-slate-400 text-lg">Ask for expert advice on finding memory addresses, identifying data structures, or bypassing anti-cheats.</p>
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-black text-white">Neural Architect Consultant</h1>
+          <div className="flex justify-center">
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${isCloudEnabled ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400' : 'bg-blue-500/10 border-blue-500/50 text-blue-400'}`}>
+              <i className={`fa-solid ${isCloudEnabled ? 'fa-cloud' : 'fa-microchip'} mr-1.5`}></i>
+              {isCloudEnabled ? 'CLOUD NEURAL ANALYSIS ACTIVE' : 'LOCAL HEURISTIC ENGINE ACTIVE'}
+            </span>
+          </div>
+        </div>
+        <p className="text-slate-400 text-lg">Input your goal to receive scanning patterns and memory structure advice.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="relative group">
@@ -36,18 +49,20 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ gameName }) => {
         <div className="relative bg-[#121216] border border-slate-700 rounded-xl overflow-hidden shadow-2xl">
           <textarea
             className="w-full h-32 bg-transparent p-6 text-lg outline-none resize-none placeholder-slate-600"
-            placeholder={`Example: How do I find the health value in ${gameName}? It's a percentage bar...`}
+            placeholder={`Example: Finding health in ${gameName}...`}
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
           />
           <div className="p-4 bg-slate-900/50 border-t border-slate-800 flex justify-between items-center">
-            <span className="text-xs text-slate-500">Powered by Gemini AI Engine v3.5</span>
+            <span className="text-xs text-slate-500 uppercase tracking-widest font-bold">
+              {isCloudEnabled ? 'Hybrid Engine v3.5' : 'Local Logic v1.2'}
+            </span>
             <button 
               disabled={loading || !goal.trim()}
               className="bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/30 px-6 py-2 rounded-lg font-bold transition-all flex items-center gap-2"
             >
-              {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : <i className="fa-solid fa-paper-plane"></i>}
-              {loading ? 'Analyzing...' : 'Analyze Scenario'}
+              {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : <i className="fa-solid fa-bolt"></i>}
+              {loading ? 'Consulting...' : 'Get Patterns'}
             </button>
           </div>
         </div>
@@ -56,25 +71,14 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ gameName }) => {
       {advice && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-5">
-              <i className="fa-solid fa-quote-right text-6xl"></i>
-            </div>
             <h3 className="text-xs font-bold uppercase text-blue-500 tracking-widest mb-4 flex items-center gap-2">
-              <i className="fa-solid fa-microchip"></i>
-              System Analysis & Recommendation
+              <i className="fa-solid fa-terminal"></i>
+              Recommended Scanning Strategy
             </h3>
-            <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-4">
+            <div className="prose prose-invert max-w-none text-slate-300 leading-relaxed space-y-4 font-medium">
               {advice.split('\n').map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
-            </div>
-            <div className="mt-8 pt-6 border-t border-slate-800 flex gap-4">
-              <button className="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors">
-                <i className="fa-solid fa-copy"></i> Copy as Script
-              </button>
-              <button className="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2 transition-colors">
-                <i className="fa-solid fa-bookmark"></i> Save to Reference
-              </button>
             </div>
           </div>
         </div>
